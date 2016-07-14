@@ -1,0 +1,6 @@
+order0 = DomesticMelonOrder("watermelon", 5)
+# OUT: Traceback (most recent call last):
+# OUT:   File "<input>", line 1, in <module>
+# OUT:   File "melons.py", line 30, in __init__
+# OUT:     super(DomesticMelonOrder, self).__init__(species, qty,"domestic", 0.08)
+# OUT: TypeError: __init__() takes exactly 3 arguments (5 given)
