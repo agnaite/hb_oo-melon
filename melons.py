@@ -1,4 +1,5 @@
 import random
+import datetime
 
 """This file should have our order classes in it."""
 class AbstractMelonOrder(object):
@@ -14,9 +15,18 @@ class AbstractMelonOrder(object):
         self.order_type = order_type
         self.tax = tax
 
+        if self.qty > 100:
+            raise TooManyMelonsError("too many melons")
+    
     def get_base_price(self):
         """This creates a base price for splurge pricing"""
+        hours = datetime.datetime.now().time().hour
+        day = datetime.date.today().weekday()
         splurge = random.randint(5, 9)
+        # checks if hours are between 8AM-11AM and day is a weekday
+        # if so, adds $4 to base price
+        if hours in range(8, 11) and day in range(0, 5):
+            splurge = splurge + 4
         return splurge
 
     def get_total(self):
@@ -68,5 +78,9 @@ class GovernmentMelonOrder(AbstractMelonOrder):
     def mark_inspection(self, passed):
         """ This function has to pass in a Boolean which determined during inspection""" 
         self.passed_inspection = passed
+
+class TooManyMelonsError(ValueError):
+     def __init__(self, value):
+        super(TooManyMelonsError, self).__init__(value)
 
 
