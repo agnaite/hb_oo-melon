@@ -3,7 +3,7 @@ class AbstractMelonOrder(object):
     """ An abstract Calss for Melon Order"""
 
 
-    def __init__(self, species = None, qty = 0,order_type = None, tax = 0):
+    def __init__(self, species=None, qty=0,order_type=None, tax=0):
         """ Initialize order attributes """
 
         self.species = species
@@ -16,7 +16,11 @@ class AbstractMelonOrder(object):
         """Calculate price."""
 
         base_price = 5
+        if self.species == "Christmas":
+            base_price = base_price * 1.5   
         total = (1 + self.tax) * self.qty * base_price
+        if self.order_type == "international" and self.qty < 10:
+            total = total + 3
         return total
 
     def mark_shipped(self):
@@ -33,7 +37,6 @@ class DomesticMelonOrder(AbstractMelonOrder):
         super(DomesticMelonOrder, self).__init__(species, qty, "domestic", 0.08)
         
 
-
 class InternationalMelonOrder(AbstractMelonOrder):
     """An international (non-US) melon order."""
 
@@ -47,3 +50,18 @@ class InternationalMelonOrder(AbstractMelonOrder):
         """Return the country code."""
 
         return self.country_code
+
+
+class GovernmentMelonOrder(AbstractMelonOrder):
+    """ Govenrment Melon Order """
+
+    def __init__(self, species, qty):
+        """Initialize melon order attributes"""
+        super(GovernmentMelonOrder, self).__init__(species, qty, "government")
+        self.passed_inspection = False
+
+    def mark_inspection(self, passed):
+        """ This function has to pass in a Boolean which determined during inspection""" 
+        self.passed_inspection = passed
+
+
